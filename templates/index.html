@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Encrypt / Decrypt Tool</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h2>🔐 Encrypt / Decrypt</h2>
+
+  <textarea id="input" rows="6" placeholder="Enter your message..."></textarea>
+  <input id="key" type="text" placeholder="Enter your secret key" />
+  <div>
+    <button onclick="encrypt()">Encrypt</button>
+    <button onclick="decrypt()">Decrypt</button>
+  </div>
+  <textarea id="output" rows="6" placeholder="Result..."></textarea>
+
+  <script>
+    async function encrypt() {
+      const text = document.getElementById("input").value;
+      const key = document.getElementById("key").value;
+      const res = await fetch("/encrypt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, key }),
+      });
+      const data = await res.json();
+      document.getElementById("output").value = data.result;
+    }
+
+    async function decrypt() {
+      const text = document.getElementById("input").value;
+      const key = document.getElementById("key").value;
+      const res = await fetch("/decrypt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, key }),
+      });
+      const data = await res.json();
+      document.getElementById("output").value = data.result;
+    }
+  </script>
+</body>
+</html>
